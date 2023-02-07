@@ -11,10 +11,12 @@ import (
 type application struct {
 	errorLog *log.Logger
 	infoLog  *log.Logger
+	api      string
 }
 
 func main() {
 	addr := flag.String("addr", ":9000", "HTTP network address")
+	api_addr := flag.String("api_addr", "https://groupietrackers.herokuapp.com/api/artists", "API url")
 	flag.Parse()
 
 	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
@@ -23,6 +25,7 @@ func main() {
 	app := application{
 		errorLog: errorLog,
 		infoLog:  infoLog,
+		api:      *api_addr,
 	}
 
 	srv := &http.Server{
@@ -30,8 +33,8 @@ func main() {
 		ErrorLog:     errorLog,
 		Handler:      app.routes(),
 		IdleTimeout:  time.Minute,
-		ReadTimeout:  5 * time.Second,
-		WriteTimeout: 10 * time.Second,
+		ReadTimeout:  10 * time.Second,
+		WriteTimeout: 15 * time.Second,
 	}
 
 	infoLog.Printf("Starting server on %s", *addr)
