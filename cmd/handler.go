@@ -15,12 +15,15 @@ func (app *application) home(w http.ResponseWriter, r *http.Request) {
 
 	tmp, err := template.ParseFiles("./web/templates/index.html")
 
-	res, err := service.GetAll(app.api)
-	if err != nil {
-		app.serverError(w, err)
-		return
+	if app.hash == nil {
+		app.hash, err = service.GetAll(app.api)
+		if err != nil {
+			app.serverError(w, err)
+			return
+		}
 	}
-	err = tmp.Execute(w, res)
+
+	err = tmp.Execute(w, app.hash)
 	if err != nil {
 		app.serverError(w, err)
 		return
@@ -46,5 +49,9 @@ func (app *application) showArtist(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	tmp.Execute(w, res)
+	err = tmp.Execute(w, res)
+	if err != nil {
+		app.serverError(w, err)
+		return
+	}
 }
