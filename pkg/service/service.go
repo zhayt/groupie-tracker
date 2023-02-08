@@ -4,16 +4,17 @@ import (
 	"encoding/json"
 	"github.com/zhayt/groupie-tracker/pkg/models"
 	"io/ioutil"
+	"log"
 	"net/http"
 )
 
-func GetAll(addr string) ([]models.Artist, error) {
+func GetAll(addr string) ([]*models.Artist, error) {
 	text, err := http.Get(addr)
 	if err != nil {
 		return nil, err
 	}
 
-	artists := make([]models.Artist, 1)
+	artists := make([]*models.Artist, 1)
 	defer text.Body.Close()
 
 	content, err := ioutil.ReadAll(text.Body)
@@ -22,7 +23,6 @@ func GetAll(addr string) ([]models.Artist, error) {
 	}
 
 	err = json.Unmarshal(content, &artists)
-
 	if err != nil {
 		return nil, err
 	}
@@ -30,25 +30,57 @@ func GetAll(addr string) ([]models.Artist, error) {
 	return artists, nil
 }
 
-func GetById(addr, id string) (*models.Artist, error) {
-	text, err := http.Get(addr + "/" + id)
-	if err != nil {
-		return nil, err
-	}
-	defer text.Body.Close()
-
+func GetById(addr, id string) (*models.PresentData, error) {
 	artist := &models.Artist{}
+	location := &models.Locations{}
+	concertDates := &models.ConcertDates{}
+	relations := &models.Relations{}
 
-	content, err := ioutil.ReadAll(text.Body)
+	err := unmarshal(addr+"/"+id, artist)
 	if err != nil {
 		return nil, err
 	}
 
-	err = json.Unmarshal(content, &artist)
+	err = unmarshal(artist.Locations, location)
+	if err != nil {
+		log.Fatalln(err)
+		return nil, err
+	}
 
+	err = unmarshal(artist.ConcertDates, concertDates)
 	if err != nil {
 		return nil, err
 	}
 
-	return artist, nil
+	err = unmarshal(artist.Relations, relations)
+	if err != nil {
+		return nil, err
+	}
+
+	return &models.PresentData{
+		Artist:       artist,
+		Locations:    location,
+		ConcertDates: concertDates,
+		Relations:    relations,
+	}, nil
+}
+
+func unmarshal(url string, data interface{}) error {
+	resp, err := http.Get(url)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return err
+	}
+
+	err = json.Unmarshal(body, data)
+	if err != nil {
+		return err
+	}
+
+	return err
 }
