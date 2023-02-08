@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"github.com/zhayt/groupie-tracker/pkg/models"
 	"io/ioutil"
-	"log"
 	"net/http"
 )
 
@@ -43,7 +42,6 @@ func GetById(addr, id string) (*models.PresentData, error) {
 
 	err = unmarshal(artist.Locations, location)
 	if err != nil {
-		log.Fatalln(err)
 		return nil, err
 	}
 
