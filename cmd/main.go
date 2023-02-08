@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"github.com/zhayt/groupie-tracker/pkg/models"
 	"log"
 	"net/http"
 	"os"
@@ -12,6 +13,7 @@ type application struct {
 	errorLog *log.Logger
 	infoLog  *log.Logger
 	api      string
+	hash     []*models.Artist
 }
 
 func main() {
