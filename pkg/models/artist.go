@@ -11,3 +11,22 @@ type Artist struct {
 	ConcertDates string   `json:"concertDates"`
 	Relations    string   `json:"relations"`
 }
+
+type PresentData struct {
+	Artist       *Artist
+	Locations    *Locations
+	ConcertDates *ConcertDates
+	Relations    *Relations
+}
+
+type Locations struct {
+	Locations []string `json:"locations"`
+}
+
+type ConcertDates struct {
+	Dates []string `json:"dates"`
+}
+
+type Relations struct {
+	DatesLocations map[string][]string `json:"datesLocations"`
+}
