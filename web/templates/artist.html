@@ -6,10 +6,49 @@
 <body>
 <h1>Groupie Tracker</h1>
 <div class="container">
-    <div>
+    {{with .Artist}}
+        <div>
             <img src="{{.Image}}">
-            <p>{{.Name}}</p>
+        </div>
+
+        <div>
+            <h2>{{.Name}}</h2>
+            <h3>Members</h3>
+            {{range .Members}}
+                <p>{{.}}</p>
+            {{end}}
+            <p>{{.CreationDate}}</p>
+            <p>{{.FirstAlbum}}</p>
+        </div>
+    {{end}}
+    {{with .Locations}}
+        <div>
+            <h3>Locations</h3>
+            {{range .Locations}}
+            <p>{{.}}<p></p>
+            {{end}}
+        </div>
+    {{end}}
+    {{with .ConcertDates}}
+    <div>
+        <h3>ConcertDates</h3>
+        {{range .Dates}}
+        <p>{{.}}<p></p>
+        {{end}}
     </div>
+    {{end}}
+    {{with .Relations}}
+    <div>
+        <h3>Relations</h3>
+        {{range $key, $value := .DatesLocations}}
+            <strong>{{ $key }}</strong>
+            {{range $value}}
+                <p>{{.}}</p>
+            {{end}}
+            <p></p>
+        {{end}}
+    </div>
+    {{end}}
 </div>
 </body>
 </html>
