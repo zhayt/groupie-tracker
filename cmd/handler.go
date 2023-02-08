@@ -38,8 +38,11 @@ func (app *application) showArtist(w http.ResponseWriter, r *http.Request) {
 	}
 
 	res, err := service.GetById(app.api, strconv.Itoa(id))
-	if err != nil {
+	if err.Error() == "Get \"\": unsupported protocol scheme \"\"" {
 		app.notFound(w)
+		return
+	} else if err != nil {
+		app.serverError(w, err)
 		return
 	}
 
