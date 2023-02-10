@@ -38,15 +38,16 @@ func (app *application) showArtist(w http.ResponseWriter, r *http.Request) {
 	}
 
 	res, err := service.GetById(app.api, strconv.Itoa(id))
+
 	if err != nil {
+		if err.Error() == "not found" {
+			app.notFound(w)
+			return
+		}
 		app.serverError(w, err)
 		return
 	}
 
-	if res.Artist.Id == 0 {
-		app.notFound(w)
-		return
-	}
 	tmp, err := template.ParseFiles("./web/templates/artist.html")
 	if err != nil {
 		app.serverError(w, err)
