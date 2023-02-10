@@ -1,0 +1,17 @@
+
+.geo {
+    margin: 0 auto;
+    width: 100%;
+    min-width: 300px;
+    height: 400px;
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    max-width: 1556px;
+
+}
+.maps {
+    max-width: 1200px;
+    margin: auto;
+    overflow: hidden;
+}
