@@ -19,6 +19,14 @@
                 {{end}}
 
                 <div class="flex flex-col">
+                    <h2 class="title-font font-semibold text-gray-800 tracking-wider text-sm mb-3">Members</h2>
+                    <nav class="flex flex-wrap list-none -mb-2">
+                        {{range .Artist.Members}}
+                        <li class="lg:w-1/3 mb-1 w-1/2">
+                            <p class="text-gray-600 hover:text-gray-800 mb-2">{{.}}</p>
+                        </li>
+                        {{end}}
+                    </nav>
                     <h2 class="title-font font-semibold text-gray-800 tracking-wider text-sm mb-3">Locations and Dates</h2>
                     {{range $key, $value := .Relations.DatesLocations}}
                     <h3 class="cities m-2 text-slate-100">{{ $key }}</h3>
