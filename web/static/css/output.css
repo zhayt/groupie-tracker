@@ -889,3 +889,12 @@ video {
     width: 16.666667%;
   }
 }
+
+.search_form{
+  margin: auto;
+}
+
+.search{
+  padding: 5px;
+  display: flex;
+}

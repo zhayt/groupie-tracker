@@ -50,11 +50,16 @@ func (f *Form) Find(toSearch string) {
 			continue
 		}
 
+		flag := false
 		for _, member := range artist.Members {
 			if strings.Contains(strings.ToLower(member), toSearch) {
 				searchedArtists = append(searchedArtists, artist)
-				continue
+				flag = true
+				break
 			}
+		}
+		if flag{
+			continue
 		}
 
 		locations, err := GetLocations(artist.Locations)
