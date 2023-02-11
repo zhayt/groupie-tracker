@@ -12,7 +12,7 @@ type Artist struct {
 	Relations    string   `json:"relations"`
 }
 
-type PresentData struct {
+type PresentAllData struct {
 	Artist       *Artist
 	Locations    *Locations
 	ConcertDates *ConcertDates
