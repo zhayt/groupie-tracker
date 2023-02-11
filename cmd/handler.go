@@ -5,6 +5,7 @@ import (
 	"html/template"
 	"net/http"
 	"strconv"
+	"strings"
 )
 
 func (app *application) home(w http.ResponseWriter, r *http.Request) {
@@ -23,7 +24,10 @@ func (app *application) home(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	err = tmp.Execute(w, app.hash)
+	f := service.NewArtists(nil)
+	f.AllArtists = app.hash
+	f.SearchedArtist = app.hash
+	err = tmp.Execute(w, f)
 	if err != nil {
 		app.serverError(w, err)
 		return
@@ -55,6 +59,47 @@ func (app *application) showArtist(w http.ResponseWriter, r *http.Request) {
 	}
 
 	err = tmp.Execute(w, res)
+	if err != nil {
+		app.serverError(w, err)
+		return
+	}
+}
+
+func (app *application) search(w http.ResponseWriter, r *http.Request) {
+	err := r.ParseForm()
+	if err != nil {
+		app.clientError(w, http.StatusBadRequest)
+		return
+	}
+
+	f := service.NewArtists(r.PostForm)
+
+	f.AllArtists, err = service.GetAll(app.api)
+	if err != nil {
+		app.serverError(w, err)
+		return
+	}
+
+	//err = f.Required("search")
+	//if err != nil {
+	//	app.clientError(w, http.StatusBadRequest)
+	//	return
+	//}
+
+	toSearch, err := f.ParseValue(strings.TrimSpace(r.FormValue("search")))
+	if err != nil {
+		app.clientError(w, http.StatusBadRequest)
+		return
+	}
+	f.Find(toSearch)
+
+	tmp, err := template.ParseFiles("./web/templates/index.html")
+	if err != nil {
+		app.serverError(w, err)
+		return
+	}
+
+	err = tmp.Execute(w, f)
 	if err != nil {
 		app.serverError(w, err)
 		return
