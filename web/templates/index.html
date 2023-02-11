@@ -18,15 +18,17 @@
                 <datalist id="search">
                     {{range .}}
                     <option value="{{.Name}} - Artist/Band"></option>
+
+                    {{range .Members}}
+                    <option value="{{.}} - Members"></option>
                     {{end}}
-                    {{range .}}
-                    <option value="{{.Members}} - Artist/Band"></option>
-                    {{end}}
-                    {{range .}}
-                    <option value="{{.FirstAlbum}} - Artist/Band"></option>
-                    {{end}}
-                    {{range .}}
-                    <option value="{{.CreationDate}} - Artist/Band"></option>
+
+
+
+                    <option value="{{.FirstAlbum}} - First Album"></option>
+
+
+                    <option value="{{.CreationDate}} - Creation Date"></option>
                     {{end}}
                 </datalist>
             </form>
