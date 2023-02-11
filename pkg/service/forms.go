@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/zhayt/groupie-tracker/pkg/models"
 	"net/url"
+	"strconv"
 	"strings"
 )
 
@@ -44,7 +45,7 @@ func (f *Form) ParseValue(str string) (string, error) {
 func (f *Form) Find(toSearch string) {
 	var searchedArtists []*models.Artist
 	for _, artist := range f.AllArtists {
-		if strings.Contains(strings.ToLower(artist.Name), toSearch) || strings.Contains(strings.ToLower(artist.ConcertDates), toSearch) || strings.Contains(strings.ToLower(artist.FirstAlbum), toSearch) {
+		if strings.Contains(strings.ToLower(artist.Name), toSearch) || strings.Contains(strings.ToLower(strconv.Itoa(artist.CreationDate)), toSearch) || strings.Contains(strings.ToLower(artist.FirstAlbum), toSearch) {
 			searchedArtists = append(searchedArtists, artist)
 			continue
 		}
