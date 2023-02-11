@@ -30,7 +30,7 @@ func GetAll(addr string) ([]*models.Artist, error) {
 	return artists, nil
 }
 
-func GetById(addr, id string) (*models.PresentData, error) {
+func GetById(addr, id string) (*models.PresentAllData, error) {
 	artist := &models.Artist{}
 	location := &models.Locations{}
 	concertDates := &models.ConcertDates{}
@@ -58,12 +58,21 @@ func GetById(addr, id string) (*models.PresentData, error) {
 		return nil, err
 	}
 
-	return &models.PresentData{
+	return &models.PresentAllData{
 		Artist:       artist,
 		Locations:    location,
 		ConcertDates: concertDates,
 		Relations:    relations,
 	}, nil
+}
+
+func GetLocations(url string) (*models.Locations, error) {
+	location := &models.Locations{}
+	err := unmarshal(url, location)
+	if err != nil {
+		return nil, err
+	}
+	return location, nil
 }
 
 func unmarshal(url string, data interface{}) error {
