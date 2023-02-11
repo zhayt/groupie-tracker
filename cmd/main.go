@@ -35,8 +35,8 @@ func main() {
 		ErrorLog:     errorLog,
 		Handler:      app.routes(),
 		IdleTimeout:  time.Minute,
-		ReadTimeout:  10 * time.Second,
-		WriteTimeout: 15 * time.Second,
+		ReadTimeout:  20 * time.Second,
+		WriteTimeout: 25 * time.Second,
 	}
 
 	infoLog.Printf("Starting server on %s", *addr)
