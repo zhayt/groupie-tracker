@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"github.com/zhayt/groupie-tracker/pkg/models"
-	"io/ioutil"
+	"io"
 	"net/http"
 )
 
@@ -14,10 +14,11 @@ func GetAll(addr string) ([]*models.Artist, error) {
 		return nil, err
 	}
 
-	artists := make([]*models.Artist, 1)
-	defer text.Body.Close()
+	defer func() { _ = text.Body.Close() }()
 
-	content, err := ioutil.ReadAll(text.Body)
+	artists := make([]*models.Artist, 0)
+
+	content, err := io.ReadAll(text.Body)
 	if err != nil {
 		return nil, err
 	}
@@ -31,39 +32,33 @@ func GetAll(addr string) ([]*models.Artist, error) {
 }
 
 func GetById(addr, id string) (*models.PresentAllData, error) {
-	artist := &models.Artist{}
-	location := &models.Locations{}
-	concertDates := &models.ConcertDates{}
-	relations := &models.Relations{}
+	allData := models.New()
 
-	err := unmarshal(addr+"/"+id, artist)
+	err := unmarshal(addr+"/"+id, allData.Artist)
 	if err != nil {
 		return nil, err
 	}
-	if artist.Id == 0 {
+
+	if allData.Artist.Id == 0 {
 		return nil, errors.New("not found")
 	}
-	err = unmarshal(artist.Locations, location)
+
+	err = unmarshal(allData.Artist.Locations, allData.Locations)
 	if err != nil {
 		return nil, err
 	}
 
-	err = unmarshal(artist.ConcertDates, concertDates)
+	err = unmarshal(allData.Artist.ConcertDates, allData.ConcertDates)
 	if err != nil {
 		return nil, err
 	}
 
-	err = unmarshal(artist.Relations, relations)
+	err = unmarshal(allData.Artist.Relations, allData.Relations)
 	if err != nil {
 		return nil, err
 	}
 
-	return &models.PresentAllData{
-		Artist:       artist,
-		Locations:    location,
-		ConcertDates: concertDates,
-		Relations:    relations,
-	}, nil
+	return allData, nil
 }
 
 func GetLocations(url string) (*models.Locations, error) {
@@ -80,9 +75,9 @@ func unmarshal(url string, data interface{}) error {
 	if err != nil {
 		return err
 	}
-	defer resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
-	body, err := ioutil.ReadAll(resp.Body)
+	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return err
 	}
