@@ -65,7 +65,7 @@ func (app *application) showArtist(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (app *application) search(w http.ResponseWriter, r *http.Request) {
+func (app *application) searchArtist(w http.ResponseWriter, r *http.Request) {
 	err := r.ParseForm()
 	if err != nil {
 		app.clientError(w, http.StatusBadRequest)
@@ -91,7 +91,8 @@ func (app *application) search(w http.ResponseWriter, r *http.Request) {
 		app.clientError(w, http.StatusBadRequest)
 		return
 	}
-	f.Find(toSearch)
+
+	f.Search(toSearch)
 
 	tmp, err := template.ParseFiles("./web/templates/index.html")
 	if err != nil {
