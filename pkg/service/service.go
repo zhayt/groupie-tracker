@@ -28,6 +28,13 @@ func GetAll(addr string) ([]*models.Artist, error) {
 		return nil, err
 	}
 
+	for _, artist := range artists {
+		artist.Locations, err = GetLocations(artist.LocationsURL)
+		if err != nil {
+			return nil, err
+		}
+	}
+
 	return artists, nil
 }
 
@@ -43,7 +50,7 @@ func GetById(addr, id string) (*models.PresentAllData, error) {
 		return nil, errors.New("not found")
 	}
 
-	err = unmarshal(allData.Artist.Locations, allData.Locations)
+	err = unmarshal(allData.Artist.LocationsURL, allData.Locations)
 	if err != nil {
 		return nil, err
 	}
