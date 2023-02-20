@@ -24,11 +24,15 @@
                     {{end}}
 
 
-
                     <option value="{{.FirstAlbum}} - First Album"></option>
 
 
                     <option value="{{.CreationDate}} - Creation Date"></option>
+                    {{with .Locations}}
+                    {{range .Locations}}
+                    <option value="{{.}} - Locations"></option>
+                    {{end}}
+                    {{end}}
                     {{end}}
                 </datalist>
             </form>
