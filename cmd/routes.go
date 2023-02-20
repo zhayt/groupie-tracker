@@ -7,7 +7,7 @@ func (app *application) routes() http.Handler {
 
 	mux.Handle("/", http.HandlerFunc(app.home))
 	mux.Handle("/artist", http.HandlerFunc(app.showArtist))
-	mux.HandleFunc("/search", app.search)
+	mux.HandleFunc("/search", app.searchArtist)
 
 	mux.Handle("/static/", http.StripPrefix("/static", http.FileServer(http.Dir("./web/static"))))
 	return app.logRequest(app.onlyGetMethod(mux))
