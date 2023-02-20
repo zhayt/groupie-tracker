@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strings"
 	"time"
 )
 
@@ -39,7 +40,7 @@ func main() {
 		WriteTimeout: 25 * time.Second,
 	}
 
-	infoLog.Printf("Starting server on %s", *addr)
+	infoLog.Printf("Starting server on http://localhost:%s", strings.ReplaceAll(*addr, ":", ""))
 	err := srv.ListenAndServe()
 	if err != nil {
 		errorLog.Fatalf(err.Error())
