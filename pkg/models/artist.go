@@ -30,3 +30,12 @@ type ConcertDates struct {
 type Relations struct {
 	DatesLocations map[string][]string `json:"datesLocations"`
 }
+
+func New() *PresentAllData {
+	return &PresentAllData{
+		Artist:       &Artist{},
+		Locations:    &Locations{},
+		ConcertDates: &ConcertDates{},
+		Relations:    &Relations{},
+	}
+}
