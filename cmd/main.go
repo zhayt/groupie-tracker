@@ -2,7 +2,7 @@ package main
 
 import (
 	"flag"
-	"github.com/zhayt/groupie-tracker/pkg/models"
+	"github.com/zhayt/groupie-tracker/internal/models"
 	"log"
 	"net/http"
 	"os"

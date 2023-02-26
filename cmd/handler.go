@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/zhayt/groupie-tracker/pkg/service"
+	"github.com/zhayt/groupie-tracker/internal/service"
 	"html/template"
 	"net/http"
 	"strconv"
@@ -15,8 +15,11 @@ func (app *application) home(w http.ResponseWriter, r *http.Request) {
 	}
 
 	tmp, err := template.ParseFiles("./web/templates/index.html")
-
-	if app.hash == nil {
+	if err != nil {
+		app.serverError(w, err)
+		return
+	}
+	if len(app.hash) == 0 {
 		app.hash, err = service.GetAll(app.api)
 		if err != nil {
 			app.serverError(w, err)

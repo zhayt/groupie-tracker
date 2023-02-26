@@ -2,7 +2,7 @@ package service
 
 import (
 	"errors"
-	"github.com/zhayt/groupie-tracker/pkg/models"
+	"github.com/zhayt/groupie-tracker/internal/models"
 	"net/url"
 	"strconv"
 	"strings"

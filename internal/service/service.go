@@ -3,7 +3,7 @@ package service
 import (
 	"encoding/json"
 	"errors"
-	"github.com/zhayt/groupie-tracker/pkg/models"
+	"github.com/zhayt/groupie-tracker/internal/models"
 	"io"
 	"net/http"
 )
